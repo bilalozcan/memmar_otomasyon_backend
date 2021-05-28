@@ -1,4 +1,4 @@
-const config = require('../../dbconfig');
+const config = require('../../db_config');
 const sql = require('mssql');
 
 async function createUser(user) {
@@ -19,6 +19,25 @@ async function createUser(user) {
         return err;
     }
 }
+
+async function loginUser(email, password) {
+    try {
+        let pool = await sql.connect(config);
+        let user = await pool.request()
+            .input('email', sql.NVarChar, email)
+            .input('password', sql.NVarChar, password)
+            .query('select * from [dbo].[user] where email = @email and password = @password');
+        if (user.recordsets[0].length == 1)
+            return user.recordsets;
+        else return null;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
 module.exports = {
     createUser: createUser,
+    loginUser: loginUser,
 }

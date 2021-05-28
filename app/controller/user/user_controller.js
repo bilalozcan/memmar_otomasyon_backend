@@ -14,7 +14,16 @@ router.post(createPath, (request, response) => {
 
 router.post(loginPath, (request, response) => {
     let body = { ...request.body };
-    
+    console.log('BODY: ' + body);
+    User.loginUser(body.email, body.password).then(result => {
+        if (result != null) {
+            response.status(200).json({ 'data': {'user': result[0][0]}, 'success': true });
+        }
+        else {
+            response.status(200).json({ 'data': null, 'success': false });
+        }
+    });
+
 });
 
 
