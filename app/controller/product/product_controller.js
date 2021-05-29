@@ -15,7 +15,7 @@ router.get(productAllPath, (request, response) => {
 router.post(productCreatePath,(request, response) => {
     let product = { ...request.body };
     Product.createProduct(product).then(result => {
-        response.status(201).json({ 'data': result[0][0], 'success': true });
+        response.status(200).json({ 'data': result[0][0], 'success': true });
     });
 })
 
