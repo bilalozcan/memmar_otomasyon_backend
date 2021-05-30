@@ -52,6 +52,7 @@ async function createProduct(product) {
             .input('updateDate', sql.DateTime, product.updateDate)
             .input('companyId', sql.Int, product.companyId)
             .execute('addProduct');
+            console.log(insertProduct.recordsets);
         return insertProduct.recordsets;
     }
     catch (err) {
