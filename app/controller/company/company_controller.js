@@ -4,6 +4,7 @@ const Company = require('./company_model');
 
 const companyCreatePath = '/company/create';
 const companyListPath = '/company/list';
+const companyUpdatePath = '/company/update';
 
 router.post(companyCreatePath, (request, response) => {
     let company = { ...request.body };
@@ -18,6 +19,13 @@ router.get(companyListPath, (request, response) => {
         response.json({ 'data': result[0], 'success': true });
     });
 });
+
+router.put(companyUpdatePath, (request, response) => {
+    let company = { ...request.body };
+    Company.updateCompany(company).then(result => {
+        response.status(200).json({ 'data': result[0][0], 'success': true });
+    })
+})
 
 module.exports = {
     router,

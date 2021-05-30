@@ -15,7 +15,7 @@ router.post(receiptCreatePath, (request, response) => {
 })
 
 router.get(receiptListPath, (request, response) => {
-    Receipt.getQueryProducts(request.query).then(result => {
+    Receipt.getQueryReceipt(request.query).then(result => {
         response.json({ 'data': result[0], 'success': true });
     });
 });

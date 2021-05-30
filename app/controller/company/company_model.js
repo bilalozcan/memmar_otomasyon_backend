@@ -18,7 +18,6 @@ async function createCompany(company) {
         console.log(err);
         return err;
     }
-
 }
 
 async function getCompany(query) {
@@ -34,7 +33,28 @@ async function getCompany(query) {
     }
 }
 
+async function updateCompany(company) {
+    try {
+        let pool = await sql.connect(config);
+        let updateCompany = await pool.request()
+            .input('id', sql.Int, company.id)
+            .input('totalAmount', sql.Real, company.totalAmount)
+            .input('totalSupply', sql.Real, company.totalSupply)
+            .input('createdAdd', sql.DateTime, company.createdAdd)
+            .input('income', sql.Real, company.income)
+            .input('name', sql.NVarChar, company.name)
+            .execute('updateCompany');
+        return updateCompany.recordsets;
+    }
+    catch (err) {
+        console.log(err);
+        return err;
+    }
+}
+
+
 module.exports = {
     createCompany: createCompany,
     getCompany: getCompany,
+    updateCompany: updateCompany
 }

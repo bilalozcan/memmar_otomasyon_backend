@@ -40,14 +40,48 @@ async function createReceipt(receipt) {
 }
 
 async function getQueryReceipt(query) {
+    console.log('StartDate: '+query.startDate)
+    console.log('EndDate: '+query.endDate)
+    console.log('createdUser: '+query.createdUser)
+    console.log('companyId: '+query.companyId)
     try {
         let pool = await sql.connect(config);
-        let products = await pool.request()
-            .input('createdDate', sql.DateTime, query.createdDate)
-            .input('createdUser', sql.Int, query.createdUser)
-            .input('companyId', sql.Int, query.companyId)
-            .query("SELECT * FROM receipt WHERE companyId = @companyId AND (name LIKE @searchValue OR barcode LIKE @searchValue)");
-        return products.recordsets;
+        if(query.companyId && query.startDate == null && query.endDate == null && query.createdUser == null){
+            console.log('Şirkete ait tüm fişleri görüntüleme')
+            let products = await pool.request()
+                .input('companyId', sql.Int, query.companyId)
+                .query("SELECT * FROM receipt WHERE companyId = @companyId");
+            return products.recordsets;
+        }else if(query.companyId && query.startDate && query.endDate && query.createdUser == null){
+            console.log('Şirkete ait belirli zamandaki fişleri görüntüleme')
+            let products = await pool.request()
+                .input('companyId', sql.Int, query.companyId)
+                .input('startDate', sql.DateTime, query.startDate)
+                .input('endDate', sql.DateTime, query.endDate)
+                .query("SELECT * FROM receipt WHERE companyId = @companyId and createdDate BETWEEN @startDate AND @endDate");
+            return products.recordsets;
+        }else if(query.companyId == null && query.startDate && query.endDate && query.createdUser){
+            console.log('Kullanıcıya ait belirli zamandaki fişleri görüntüleme')
+            let products = await pool.request()
+                .input('startDate', sql.DateTime, query.startDate)
+                .input('endDate', sql.DateTime, query.endDate)
+                .input('createdUser', sql.Int, query.createdUser)
+                .query("SELECT * FROM receipt WHERE createdUser = @createdUser and createdDate BETWEEN @startDate AND @endDate");
+            return products.recordsets;
+        }else if(query.companyId == null && query.startDate == null && query.endDate == null && query.createdUser){
+            console.log('Kullanıcıya ait tüm fişleri görüntüleme')
+            let products = await pool.request()
+                .input('createdUser', sql.Int, query.createdUser)
+                .query("SELECT * FROM receipt WHERE createdUser = @createdUser");
+            return products.recordsets;
+        }else if(query.companyId == null && query.startDate == null && query.endDate == null && query.createdUser == null){
+            console.log('Tüm fişleri görüntüleme')
+            let products = await pool.request()
+                .query("SELECT * FROM receipt");
+                return products.recordsets;
+        }else{
+            return [null];
+        }
     }
     catch (error) {
         console.log(error);
@@ -55,6 +89,7 @@ async function getQueryReceipt(query) {
 }
 
 module.exports = {
-    createReceipt: createReceipt
+    createReceipt: createReceipt,
+    getQueryReceipt: getQueryReceipt,
     
 }
