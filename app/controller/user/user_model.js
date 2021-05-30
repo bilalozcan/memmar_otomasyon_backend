@@ -36,8 +36,23 @@ async function loginUser(email, password) {
     }
 }
 
+async function getUsers(query) {
+    console.log(query.companyId);
+    try {
+        let pool = await sql.connect(config);
+        let users = await pool.request()
+        .input('companyId', sql.Int, Number(query.companyId))
+        .query("SELECT * from [dbo].[user] where companyId = @companyId");
+        return users.recordsets;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 
 module.exports = {
     createUser: createUser,
     loginUser: loginUser,
+    getUsers: getUsers,
 }
