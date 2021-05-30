@@ -21,6 +21,20 @@ async function createCompany(company) {
 
 }
 
+async function getCompany(query) {
+    try {
+        let pool = await sql.connect(config);
+        let companies = await pool.request()
+            .input('companyId', sql.Int, Number(query.companyId))
+            .query("SELECT * FROM company WHERE id = @companyId");
+        return companies.recordsets;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     createCompany: createCompany,
+    getCompany: getCompany,
 }
