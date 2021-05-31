@@ -22,7 +22,7 @@ router.get(productListPath, (request, response) => {
 router.post(productCreatePath, (request, response) => {
     let product = { ...request.body };
     Product.createProduct(product).then(result => {
-        response.status(200).json({ 'data': result[1][0], 'success': true });
+        response.status(200).json({ 'data': result[0][0], 'success': true });
     });
 })
 router.put(productUpdatePath, (request, response) => {

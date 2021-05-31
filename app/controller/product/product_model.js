@@ -34,12 +34,12 @@ async function getQueryProducts(query) {
 
 async function createProduct(product) {
     try {
+        //console.log(product)
         let pool = await sql.connect(config);
         let insertProduct = await pool.request()
             .input('name', sql.NVarChar, product.name)
             .input('purchasePrice', sql.Real, product.purchasePrice)
             .input('stock', sql.Int, product.stock)
-            .input('remaining', sql.Int, product.remaining)
             .input('barcode', sql.NVarChar, product.barcode)
             .input('countryCode', sql.NVarChar, product.countryCode)
             .input('salePrice', sql.Real, product.salePrice)
@@ -52,7 +52,7 @@ async function createProduct(product) {
             .input('updateDate', sql.DateTime, product.updateDate)
             .input('companyId', sql.Int, product.companyId)
             .execute('addProduct');
-            console.log(insertProduct.recordsets);
+            //console.log(insertProduct.recordsets[0][0]);
         return insertProduct.recordsets;
     }
     catch (err) {
