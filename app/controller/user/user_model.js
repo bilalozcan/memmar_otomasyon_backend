@@ -50,9 +50,63 @@ async function getUsers(query) {
     }
 }
 
+async function updateUserInfo(body) {
+    try {
+        console.log('update user info' + body);
+        let pool = await sql.connect(config);
+        let user = await pool.request()
+        .input('id', sql.Int, body.id)
+        .input('fullName', sql.VarChar, body.fullName)
+        .execute('updateUserInfo');
+        return user.recordsets;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+async function updateUserPassword(body) {
+    try {
+        console.log('update user password' + body);
+        let pool = await sql.connect(config);
+        let user = await pool.request()
+        .input('id', sql.Int, body.id)
+        .input('oldPassword', sql.VarChar, body.oldPassword)
+        .input('newPassword', sql.VarChar, body.newPassword)
+        .execute('updateUserPassword');
+        console.log(user.recordsets)
+        console.log(user.recordsets.length)
+        console.log(user.recordsets.length == 0)
+        return user.recordsets;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+async function updateUserEmail(body) {
+    try {
+        console.log('update user email' + body);
+        let pool = await sql.connect(config);
+        let user = await pool.request()
+        .input('id', sql.Int, body.id)
+        .input('oldEmail', sql.VarChar, body.oldEmail)
+        .input('newEmail', sql.VarChar, body.newEmail)
+        .execute('updateUserEmail');
+        console.log(user.recordsets)
+        console.log(user.recordsets.isNotEmpty)
+        return user.recordsets;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
 
 module.exports = {
     createUser: createUser,
     loginUser: loginUser,
     getUsers: getUsers,
+    updateUserInfo : updateUserInfo,
+    updateUserPassword:updateUserPassword,
+    updateUserEmail:updateUserEmail,
 }

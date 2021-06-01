@@ -16,16 +16,18 @@ async function createReceipt(receipt) {
             .input('companyId', sql.Int, receipt.companyId)
             .execute('addReceipt');
         //let x = await insertReceipt.recordset
+        console.log('receipt id: ' + insertReceipt.recordsets[0][0]['id']);
         receiptId = insertReceipt.recordsets[0][0]['id'];
         salesList = [];
         for (let i = 0; i < receipt.salesList.length; i++) {
-            //console.log(receipt.salesList[i]);
+            console.log(receipt.salesList[i]);
+            console.log(receipt.salesList[i].quantity);
             let insertSales = await pool.request()
                 .input('productId', sql.Int, receipt.salesList[i].productId)
                 .input('userId', sql.Int, receipt.salesList[i].userId)
                 .input('updateDate', sql.DateTime, receipt.salesList[i].createdDate)
                 .input('quantity', sql.Int, receipt.salesList[i].quantity)
-                .input('receiptId', sql.Real, receiptId)
+                .input('receiptId', sql.Int, receiptId)
                 .execute('addSales');
             salesList.push(insertSales.recordsets[0][0]);
         }

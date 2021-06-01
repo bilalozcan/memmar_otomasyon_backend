@@ -24,7 +24,7 @@ async function getQueryProducts(query) {
         let products = await pool.request()
             .input('companyId', sql.Int, Number(query.companyId))
             .input('searchValue', sql.NVarChar, '%' + query.searchValue + '%')
-            .query("SELECT * FROM product WHERE companyId = @companyId AND (name LIKE @searchValue OR barcode LIKE @searchValue)");
+            .query("SELECT * FROM product WHERE companyId = @companyId AND isActive = 1 AND (name LIKE @searchValue OR barcode LIKE @searchValue)");
         return products.recordsets;
     }
     catch (error) {
@@ -89,6 +89,20 @@ async function updateProduct(product) {
         return err;
     }
 }
+async function deleteProduct(product) {
+    try {
+        let pool = await sql.connect(config);
+        let deleteProduct = await pool.request()
+            .input('id', sql.Int, product.id)
+            .query('UPDATE product SET isActive = 0 WHERE id = @id');
+        return deleteProduct.recordsets;
+    }
+    catch (err) {
+        console.log(err);
+        return err;
+    }
+}
+
 
 
 
@@ -96,5 +110,6 @@ module.exports = {
     getAllProducts: getAllProducts,
     createProduct: createProduct,
     updateProduct: updateProduct,
-    getQueryProducts: getQueryProducts
+    getQueryProducts: getQueryProducts,
+    deleteProduct: deleteProduct,
 }

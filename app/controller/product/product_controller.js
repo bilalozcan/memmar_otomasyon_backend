@@ -6,6 +6,7 @@ const productCreatePath = '/product/create';
 const productAllPath = '/product/all';
 const productListPath = '/product/list';
 const productUpdatePath = '/product/update';
+const productDeletePath = '/product/delete';
 
 router.get(productAllPath, (request, response) => {
     Product.getAllProducts().then(result => {
@@ -29,6 +30,13 @@ router.put(productUpdatePath, (request, response) => {
     let product = { ...request.body };
     Product.updateProduct(product).then(result => {
         response.status(200).json({ 'data': result[0][0], 'success': true });
+    })
+})
+
+router.delete(productDeletePath, (request, response) => {
+    let product = { ...request.body };
+    Product.deleteProduct(product).then(result => {
+        response.status(200).json({ 'data': 'deleted', 'success': true });
     })
 })
 
