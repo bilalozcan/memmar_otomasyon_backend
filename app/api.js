@@ -9,6 +9,7 @@ const CompanyController = require('./controller/company/company_controller');
 const ReceiptController = require('./controller/receipt/receipt_controller');
 const SupplierController = require('./controller/supplier/supplier_controller');
 const SupplyController = require('./controller/supply/supply_controller');
+const StatisticController = require('./controller/statistics/statistic_controller');
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -21,6 +22,7 @@ app.use(CompanyController.router);
 app.use(ReceiptController.router);
 app.use(SupplierController.router);
 app.use(SupplyController.router);
+app.use(StatisticController.router);
 
 
 const port = process.env.PORT || 8090;
