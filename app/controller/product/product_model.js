@@ -77,7 +77,7 @@ async function updateProduct(product) {
             .input('isActive', sql.Bit, product.isActive)
             .input('createdUser', sql.Int, product.createdUser)
             .input('createdDate', sql.DateTime, product.createdDate)
-            .input('supplierld', sql.Int, product.supplierld)
+            .input('supplierId', sql.Int, product.supplierId)
             .input('sold', sql.Int, product.sold)
             .input('updateDate', sql.DateTime, product.updateDate)
             .input('companyId', sql.Int, product.companyId)
