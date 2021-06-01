@@ -4,7 +4,7 @@ const sql = require('mssql');
 
 async function createReceipt(receipt) {
     console.log('createReceipt fonksiyonu çalıştı')
-
+    console.log(receipt)
     try {
         let pool = await sql.connect(config);
         let insertReceipt = await pool.request()
@@ -29,6 +29,7 @@ async function createReceipt(receipt) {
                 .input('quantity', sql.Int, receipt.salesList[i].quantity)
                 .input('receiptId', sql.Int, receiptId)
                 .execute('addSales');
+                console.log(insertSales)
             salesList.push(insertSales.recordsets[0][0]);
         }
         insertReceipt.recordsets[0][0]['salesList'] = salesList;
