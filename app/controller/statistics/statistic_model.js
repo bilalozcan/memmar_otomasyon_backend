@@ -75,11 +75,11 @@ async function statistic4(query) {
         let table = await pool.request()
             .input('companyId', sql.Int, query.companyId)
             .query(
-                "SELECT MONTH(receipt.createdDate) as month, " +
+                "SELECT MONTH(receipt.createdDate) as month, YEAR(receipt.createdDate) as year, " +
                 "SUM(receipt.totalAmount) as totalAmount  " +
                 "FROM receipt " +
                 "WHERE companyId = @companyId " +
-                "GROUP BY MONTH(receipt.createdDate) "
+                "GROUP BY MONTH(receipt.createdDate), YEAR(receipt.createdDate) "
             );
         return table.recordsets;
     }
@@ -95,11 +95,11 @@ async function statistic5(query) {
         let table = await pool.request()
             .input('companyId', sql.Int, query.companyId)
             .query(
-                "SELECT  MONTH(supply.createdDate) as month, " +
+                "SELECT  MONTH(supply.createdDate) as month, YEAR(supply.createdDate) as year, " +
                 "SUM(supply.quantity * supply.purchasePrice) as totalSupply  " +
                 "FROM supply " +
                 "WHERE companyId = @companyId " +
-                "GROUP BY MONTH(supply.createdDate) "
+                "GROUP BY MONTH(supply.createdDate),YEAR(supply.createdDate) "
             );
         return table.recordsets;
     }
@@ -115,10 +115,51 @@ async function statistic6(query) {
         let table = await pool.request()
             .input('companyId', sql.Int, query.companyId)
             .query(
-                "SELECT MONTH(sales.createdDate) as ay , SUM(sales.quantity) as quantity " +
+                "SELECT MONTH(sales.createdDate) as ay, YEAR(sales.createdDate) as year, SUM(sales.quantity) as quantity " +
                 "FROM sales, product WHERE product.id = sales.productId " +
                 "AND product.companyId = @companyId " +
-                "GROUP BY MONTH(sales.createdDate) "
+                "GROUP BY MONTH(sales.createdDate), YEAR(sales.createdDate) "
+            );
+        return table.recordsets;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+//Şirkete ait günlük gelir 
+async function statistic7(query) {
+    console.log(query.companyId);
+    try {
+        let pool = await sql.connect(config);
+        let table = await pool.request()
+            .input('companyId', sql.Int, query.companyId)
+            .query(
+                "SELECT MONTH(receipt.createdDate) as month,DAY(receipt.createdDate) as day, YEAR(receipt.createdDate) as year, " +
+                "SUM(receipt.totalAmount) as totalAmount " +
+                "FROM receipt " +
+                "WHERE companyId = @companyId " +
+                "GROUP BY MONTH(receipt.createdDate), DAY(receipt.createdDate), YEAR(receipt.createdDate) "
+            );
+        return table.recordsets;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+//Şirkete ait tedarikçilere toplam giden ücret
+async function statistic8(query) {
+    console.log(query.companyId);
+    try {
+        let pool = await sql.connect(config);
+        let table = await pool.request()
+            .input('companyId', sql.Int, query.companyId)
+            .query(
+                "SELECT supplier.name, SUM(supply.quantity * supply.purchasePrice) as amount " +
+                "FROM supply INNER JOIN supplier ON supplier.id = supply.supplierId " +
+                "WHERE companyId = @companyId " +
+                "GROUP BY supplier.name ORDER BY amount DESC "
             );
         return table.recordsets;
     }
@@ -134,6 +175,8 @@ module.exports = {
     statistic4: statistic4,
     statistic5: statistic5,
     statistic6: statistic6,
+    statistic7: statistic7,
+    statistic8: statistic8,
 }
 
 // "SELECT [dbo].[user].id as userId, [dbo].[user].fullName,  "+

@@ -8,6 +8,8 @@ const statisticThreePath = '/statistic/three';
 const statisticFourPath = '/statistic/four';
 const statisticFivePath = '/statistic/five';
 const statisticSixPath = '/statistic/six';
+const statisticSevenPath = '/statistic/seven';
+const statisticEightPath = '/statistic/eight';
 
 router.get(statisticOnePath, (request, response) => {
     console.log(request.query);
@@ -47,7 +49,18 @@ router.get(statisticSixPath, (request, response) => {
         response.json({ 'data': result[0], 'success': true });
     });
 });
-
+router.get(statisticSevenPath, (request, response) => {
+    console.log(request.query);
+    Statistic.statistic7(request.query).then(result => {
+        response.json({ 'data': result[0], 'success': true });
+    });
+});
+router.get(statisticEightPath, (request, response) => {
+    console.log(request.query);
+    Statistic.statistic8(request.query).then(result => {
+        response.json({ 'data': result[0], 'success': true });
+    });
+});
 module.exports = {
     router,
 };
