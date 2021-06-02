@@ -3,8 +3,11 @@ var router = express.Router();
 const Statistic = require('./statistic_model');
 
 const statisticOnePath = '/statistic/one';
-const statisticSecondPath = '/statistic/second';
-const statisticThirdPath = '/statistic/third';
+const statisticTwoPath = '/statistic/two';
+const statisticThreePath = '/statistic/three';
+const statisticFourPath = '/statistic/four';
+const statisticFivePath = '/statistic/five';
+const statisticSixPath = '/statistic/six';
 
 router.get(statisticOnePath, (request, response) => {
     console.log(request.query);
@@ -13,16 +16,34 @@ router.get(statisticOnePath, (request, response) => {
     });
 });
 
-router.get(statisticSecondPath, (request, response) => {
+router.get(statisticTwoPath, (request, response) => {
     console.log(request.query);
     Statistic.statistic2(request.query).then(result => {
         response.json({ 'data': result[0], 'success': true });
     });
 });
 
-router.get(statisticThirdPath, (request, response) => {
+router.get(statisticThreePath, (request, response) => {
     console.log(request.query);
     Statistic.statistic3(request.query).then(result => {
+        response.json({ 'data': result[0], 'success': true });
+    });
+});
+router.get(statisticFourPath, (request, response) => {
+    console.log(request.query);
+    Statistic.statistic4(request.query).then(result => {
+        response.json({ 'data': result[0], 'success': true });
+    });
+});
+router.get(statisticFivePath, (request, response) => {
+    console.log(request.query);
+    Statistic.statistic5(request.query).then(result => {
+        response.json({ 'data': result[0], 'success': true });
+    });
+});
+router.get(statisticSixPath, (request, response) => {
+    console.log(request.query);
+    Statistic.statistic6(request.query).then(result => {
         response.json({ 'data': result[0], 'success': true });
     });
 });

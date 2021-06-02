@@ -57,8 +57,68 @@ async function statistic3(query) {
                 "select product.name, supply.quantity " +
                 "from product  " +
                 "INNER JOIN supply on supply.productId = product.id " +
-                "WHERE product.companyId = @companyId "+
+                "WHERE product.companyId = @companyId " +
                 "ORDER BY supply.quantity DESC "
+            );
+        return table.recordsets;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+//Şirkete ait aylık gelir listesi
+async function statistic4(query) {
+    console.log(query.companyId);
+    try {
+        let pool = await sql.connect(config);
+        let table = await pool.request()
+            .input('companyId', sql.Int, query.companyId)
+            .query(
+                "SELECT MONTH(receipt.createdDate) as month, " +
+                "SUM(receipt.totalAmount) as totalAmount  " +
+                "FROM receipt " +
+                "WHERE companyId = @companyId " +
+                "GROUP BY MONTH(receipt.createdDate) "
+            );
+        return table.recordsets;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+//Şirkete ait aylık gider listesi
+async function statistic5(query) {
+    console.log(query.companyId);
+    try {
+        let pool = await sql.connect(config);
+        let table = await pool.request()
+            .input('companyId', sql.Int, query.companyId)
+            .query(
+                "SELECT  MONTH(supply.createdDate) as month, " +
+                "SUM(supply.quantity * supply.purchasePrice) as totalSupply  " +
+                "FROM supply " +
+                "WHERE companyId = @companyId " +
+                "GROUP BY MONTH(supply.createdDate) "
+            );
+        return table.recordsets;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+//Şirkete ait aylık satılan ürün miktarları
+async function statistic6(query) {
+    console.log(query.companyId);
+    try {
+        let pool = await sql.connect(config);
+        let table = await pool.request()
+            .input('companyId', sql.Int, query.companyId)
+            .query(
+                "SELECT MONTH(sales.createdDate) as ay , SUM(sales.quantity) as quantity " +
+                "FROM sales, product WHERE product.id = sales.productId " +
+                "AND product.companyId = @companyId " +
+                "GROUP BY MONTH(sales.createdDate) "
             );
         return table.recordsets;
     }
@@ -70,7 +130,10 @@ async function statistic3(query) {
 module.exports = {
     statistic1: statistic1,
     statistic2: statistic2,
-    statistic3: statistic3
+    statistic3: statistic3,
+    statistic4: statistic4,
+    statistic5: statistic5,
+    statistic6: statistic6,
 }
 
 // "SELECT [dbo].[user].id as userId, [dbo].[user].fullName,  "+
