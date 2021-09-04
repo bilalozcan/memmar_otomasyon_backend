@@ -24,7 +24,8 @@ async function getQueryProducts(query) {
         let products = await pool.request()
             .input('companyId', sql.Int, Number(query.companyId))
             .input('searchValue', sql.NVarChar, '%' + query.searchValue + '%')
-            .query("SELECT * FROM product WHERE companyId = @companyId AND isActive = 1 AND (name LIKE @searchValue OR barcode LIKE @searchValue)");
+            .query("SELECT * FROM product WHERE companyId = @companyId AND "+
+            "isActive = 1 AND (name LIKE @searchValue OR barcode LIKE @searchValue)");
         return products.recordsets;
     }
     catch (error) {

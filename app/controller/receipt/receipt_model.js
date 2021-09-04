@@ -56,12 +56,13 @@ async function getQueryReceipt(query) {
                     'DECLARE @cnt INT = 1; ' +
                     'WHILE @cnt <= @count ' +
                     'BEGIN ' +
-                    'select * from (select *, ROW_NUMBER() OVER (ORDER BY id ) rn FROM [receipt] WHERE companyId = @companyId ) AS [takmaAd] WHERE rn = @cnt ' +
-                    'select  @receiptId = id from (select *, ROW_NUMBER() OVER (ORDER BY id ) rn FROM [receipt] WHERE companyId = @companyId ) AS [takmaAd] WHERE rn = @cnt ' +
+                    'select * from (select *, ROW_NUMBER() OVER (ORDER BY id ) rn '+
+                    'FROM [receipt] WHERE companyId = @companyId ) AS [takmaAd] WHERE rn = @cnt ' +
+                    'select  @receiptId = id from (select *, ROW_NUMBER() OVER (ORDER BY id ) rn '+
+                    'FROM [receipt] WHERE companyId = @companyId ) AS [takmaAd] WHERE rn = @cnt ' +
                     'SELECT * FROM sales WHERE receiptId = @receiptId ' +
                     'SET @cnt += 1 ' +
-                    'END; '
-                );
+                    'END; ');
             for (let i = 0; i < receipts.recordsets.length; i++) {
                 receipts.recordsets[i][0]['salesList'] = receipts.recordsets[i + 1];
                 receipts.recordsets.splice(i + 1, 1);
@@ -80,12 +81,17 @@ async function getQueryReceipt(query) {
                 .query(
                     'DECLARE @receiptId int ' +
                     'DECLARE @count int ' +
-                    'SELECT @count = count(*) FROM receipt WHERE companyId = @companyId and createdDate BETWEEN @startDate AND @endDate ' +
+                    'SELECT @count = count(*) FROM receipt WHERE companyId = @companyId '+
+                    'and createdDate BETWEEN @startDate AND @endDate ' +
                     'DECLARE @cnt INT = 1; ' +
                     'WHILE @cnt <= @count ' +
                     'BEGIN ' +
-                    'select * from (select *, ROW_NUMBER() OVER (ORDER BY id ) rn FROM [receipt] WHERE companyId = @companyId and createdDate BETWEEN @startDate AND @endDate ) AS [takmaAd] WHERE rn = @cnt ' +
-                    'select  @receiptId = id from (select *, ROW_NUMBER() OVER (ORDER BY id ) rn FROM [receipt] WHERE companyId = @companyId and createdDate BETWEEN @startDate AND @endDate ) AS [takmaAd] WHERE rn = @cnt ' +
+                    'select * from (select *, ROW_NUMBER() OVER (ORDER BY id ) rn '+
+                    'FROM [receipt] WHERE companyId = @companyId and '+
+                    'createdDate BETWEEN @startDate AND @endDate ) AS [takmaAd] WHERE rn = @cnt ' +
+                    'select  @receiptId = id from (select *, ROW_NUMBER() OVER (ORDER BY id ) rn '+
+                    'FROM [receipt] WHERE companyId = @companyId and createdDate BETWEEN @startDate AND @endDate ) AS [takmaAd] '+
+                    'WHERE rn = @cnt ' +
                     'SELECT * FROM sales WHERE receiptId = @receiptId ' +
                     'SET @cnt += 1 ' +
                     'END; '
@@ -108,16 +114,20 @@ async function getQueryReceipt(query) {
                 .query(
                     'DECLARE @receiptId int ' +
                     'DECLARE @count int ' +
-                    'SELECT @count = count(*) FROM receipt WHERE createdUser = @createdUser and createdDate BETWEEN @startDate AND @endDate ' +
+                    'SELECT @count = count(*) FROM receipt '+
+                    'WHERE createdUser = @createdUser and createdDate BETWEEN @startDate AND @endDate ' +
                     'DECLARE @cnt INT = 1; ' +
                     'WHILE @cnt <= @count ' +
                     'BEGIN ' +
-                    'select * from (select *, ROW_NUMBER() OVER (ORDER BY id ) rn FROM [receipt] WHERE createdUser = @createdUser and createdDate BETWEEN @startDate AND @endDate ) AS [takmaAd] WHERE rn = @cnt ' +
-                    'select  @receiptId = id from (select *, ROW_NUMBER() OVER (ORDER BY id ) rn FROM [receipt] WHERE createdUser = @createdUser and createdDate BETWEEN @startDate AND @endDate ) AS [takmaAd] WHERE rn = @cnt ' +
+                    'select * from (select *, ROW_NUMBER() OVER (ORDER BY id ) rn '+
+                    'FROM [receipt] WHERE createdUser = @createdUser and '+
+                    'createdDate BETWEEN @startDate AND @endDate ) AS [takmaAd] WHERE rn = @cnt ' +
+                    'select  @receiptId = id from (select *, ROW_NUMBER() OVER (ORDER BY id ) rn '+
+                    'FROM [receipt] WHERE createdUser = @createdUser and '+
+                    'createdDate BETWEEN @startDate AND @endDate ) AS [takmaAd] WHERE rn = @cnt ' +
                     'SELECT * FROM sales WHERE receiptId = @receiptId ' +
                     'SET @cnt += 1 ' +
-                    'END; '
-                );
+                    'END; ');
             for (let i = 0; i < receipts.recordsets.length; i++) {
                 receipts.recordsets[i][0]['salesList'] = receipts.recordsets[i + 1];
                 receipts.recordsets.splice(i + 1, 1);
@@ -140,12 +150,13 @@ async function getQueryReceipt(query) {
                     'DECLARE @cnt INT = 1; ' +
                     'WHILE @cnt <= @count ' +
                     'BEGIN ' +
-                    'select * from (select *, ROW_NUMBER() OVER (ORDER BY id ) rn FROM [receipt] WHERE createdUser = @createdUser ) AS [takmaAd] WHERE rn = @cnt ' +
-                    'select  @receiptId = id from (select *, ROW_NUMBER() OVER (ORDER BY id ) rn FROM [receipt] WHERE createdUser = @createdUser ) AS [takmaAd] WHERE rn = @cnt ' +
+                    'select * from (select *, ROW_NUMBER() OVER (ORDER BY id ) rn '+
+                    'FROM [receipt] WHERE createdUser = @createdUser ) AS [takmaAd] WHERE rn = @cnt ' +
+                    'select  @receiptId = id from (select *, ROW_NUMBER() OVER (ORDER BY id ) rn '+
+                    'FROM [receipt] WHERE createdUser = @createdUser ) AS [takmaAd] WHERE rn = @cnt ' +
                     'SELECT * FROM sales WHERE receiptId = @receiptId ' +
                     'SET @cnt += 1 ' +
-                    'END; '
-                );
+                    'END; ');
             for (let i = 0; i < receipts.recordsets.length; i++) {
                 receipts.recordsets[i][0]['salesList'] = receipts.recordsets[i + 1];
                 receipts.recordsets.splice(i + 1, 1);

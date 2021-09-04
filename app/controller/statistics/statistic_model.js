@@ -115,7 +115,8 @@ async function statistic6(query) {
         let table = await pool.request()
             .input('companyId', sql.Int, query.companyId)
             .query(
-                "SELECT MONTH(sales.createdDate) as ay, YEAR(sales.createdDate) as year, SUM(sales.quantity) as quantity " +
+                "SELECT MONTH(sales.createdDate) as ay, YEAR(sales.createdDate) as year, "+
+                "SUM(sales.quantity) as quantity " +
                 "FROM sales, product WHERE product.id = sales.productId " +
                 "AND product.companyId = @companyId " +
                 "GROUP BY MONTH(sales.createdDate), YEAR(sales.createdDate) "
@@ -135,7 +136,8 @@ async function statistic7(query) {
         let table = await pool.request()
             .input('companyId', sql.Int, query.companyId)
             .query(
-                "SELECT MONTH(receipt.createdDate) as month,DAY(receipt.createdDate) as day, YEAR(receipt.createdDate) as year, " +
+                "SELECT MONTH(receipt.createdDate) as month,DAY(receipt.createdDate) as day, "+
+                "YEAR(receipt.createdDate) as year, " +
                 "SUM(receipt.totalAmount) as totalAmount " +
                 "FROM receipt " +
                 "WHERE companyId = @companyId " +
