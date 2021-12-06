@@ -4,12 +4,12 @@ const sql = require('mssql');
 //Bir şirkete ait kullanıcı için toplam satılan ürün miktarı ve toplam 
 async function statistic1(query) {
     console.log(query.companyId);
-    queryString = "SELECT [dbo].[user].id as userId, [dbo].[user].fullName,  " +
+    queryString = "SELECT [dbo].[userTable].id as userId, [dbo].[userTable].fullName,  " +
         "SUM(receipt.totalSales) as totalSales , SUM(receipt.totalAmount) as totalAmount   " +
-        "FROM [dbo].[user]  " +
-        "INNER JOIN receipt ON receipt.createdUser = [dbo].[user].id " +
+        "FROM [dbo].[userTable]  " +
+        "INNER JOIN receipt ON receipt.createdUser = [dbo].[userTable].id " +
         "WHERE receipt.companyId = @companyId " +
-        " GROUP BY [dbo].[user].fullName, [dbo].[user].id ";
+        " GROUP BY [dbo].[userTable].fullName, [dbo].[userTable].id ";
     if (query.isSales)
         queryString += " ORDER BY totalSales DESC ";
     else
@@ -181,11 +181,11 @@ module.exports = {
     statistic8: statistic8,
 }
 
-// "SELECT [dbo].[user].id as userId, [dbo].[user].fullName,  "+
+// "SELECT [dbo].[userTable].id as userId, [dbo].[userTable].fullName,  "+
 // "SUM(receipt.totalSales) as totalSales , SUM(receipt.totalAmount) as totalAmount   "+
-// "FROM [dbo].[user]  "+
-// "INNER JOIN receipt ON receipt.createdUser = [dbo].[user].id "+
+// "FROM [dbo].[userTable]  "+
+// "INNER JOIN receipt ON receipt.createdUser = [dbo].[userTable].id "+
 // "WHERE receipt.companyId = @companyId "+
-// " GROUP BY [dbo].[user].fullName, [dbo].[user].id "+
+// " GROUP BY [dbo].[userTable].fullName, [dbo].[userTable].id "+
 // (query.isSales) ? " ORDER BY totalSales DESC " : " ORDER BY totalAmount DESC " +
 // " ORDER BY totalSales DESC "

@@ -26,7 +26,7 @@ async function loginUser(email, password) {
         let user = await pool.request()
             .input('email', sql.NVarChar, email)
             .input('password', sql.NVarChar, password)
-            .query('select * from [dbo].[user] where email = @email and password = @password');
+            .query('select * from [dbo].[userTable] where email = @email and password = @password');
         if (user.recordsets[0].length == 1)
             return user.recordsets;
         else return null;
@@ -42,7 +42,7 @@ async function getUsers(query) {
         let pool = await sql.connect(config);
         let users = await pool.request()
         .input('companyId', sql.Int, Number(query.companyId))
-        .query("SELECT * from [dbo].[user] where companyId = @companyId");
+        .query("SELECT * from [dbo].[userTable] where companyId = @companyId");
         return users.recordsets;
     }
     catch (error) {

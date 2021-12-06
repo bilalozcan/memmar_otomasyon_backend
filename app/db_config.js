@@ -1,12 +1,12 @@
 const config = {
-    user: 'bilalozcan',
-    password: 'Bilal123',
-    server: 'bilalozcanstudent.database.windows.net',
+    user: 'fatihgayberi',
+    password: 'Memmarkutuphane+15',
+    server: 'kutuphane15.database.windows.net',
     database: 'memmar',
     options: {
         trustedconnection: true,
         enableArithAbort: true,
-        instancename: 'bilalozcanstudent.database.windows.net'
+        instancename: 'kutuphane15.database.windows.net'
     },
     port: 1433
 }
